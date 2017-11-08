@@ -1,0 +1,28 @@
+RewriteEngine On
+
+#RewriteRule .* - [E=HTTP_Authorization:%{HTTP:Authorization}]
+# https://devhacksandgoodies.wordpress.com/2014/06/27/apache-pass-authorization-header-to-phps-_serverhttp_authorization/
+#SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
+
+#RewriteCond %{REQUEST_METHOD} OPTIONS
+#RewriteRule ^(.*)$ api/www/ok.html [QSA,L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^backend/(assets|css|img|js)/(.*)$ backend/web/$1/$2 [L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^backend(.*)$ backend/web/index.php [L]
+
+# This works on Tántalo (Windows)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^api/(.*) api/web/index.php/$1 [NC,L]
+
+# This works on Gigas (Ubuntu)
+#RewriteCond %{REQUEST_FILENAME} !-f
+#RewriteRule ^api(.*)$ api/web/index.php [L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(assets|css|img|js)/(.*)$ frontend/web/$1/$2 [L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ frontend/web/index.php [L]
